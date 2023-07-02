@@ -1,0 +1,13 @@
+{
+  "domain": "comfortlink_ii_stats",
+  "name": "Comfortlink 2 Stats",
+  "codeowners": ["@MoralCode"],
+  "config_flow": true,
+  "dependencies": [],
+  "documentation": "https://www.home-assistant.io/integrations/comfortlink_ii_stats",
+  "homekit": {},
+  "iot_class": "local_polling",
+  "requirements": ["lantrane==0.0.1"],
+  "ssdp": [],
+  "zeroconf": []
+}

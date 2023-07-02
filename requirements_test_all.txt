@@ -849,6 +849,9 @@ krakenex==2.1.0
 # homeassistant.components.lacrosse_view
 lacrosse-view==1.0.1
 
+# homeassistant.components.comfortlink_ii_stats
+lantrane==0.0.1
+
 # homeassistant.components.laundrify
 laundrify-aio==1.1.2
 
