@@ -13,6 +13,8 @@ from homeassistant.exceptions import HomeAssistantError
 
 from .const import DOMAIN
 
+from lantrane import Trane
+
 _LOGGER = logging.getLogger(__name__)
 
 # TODO adjust the data schema to the data that you need
@@ -22,22 +24,6 @@ STEP_USER_DATA_SCHEMA = vol.Schema(
         vol.Required("port"): int,
     }
 )
-
-
-class PlaceholderHub:
-    """Placeholder class to make tests pass.
-
-    TODO Remove this placeholder class and replace with things from your PyPI package.
-    """
-
-    def __init__(self, host: str) -> None:
-        """Initialize."""
-        self.host = host
-
-    async def authenticate(self, username: str, password: str) -> bool:
-        """Test if we can authenticate with the host."""
-        return True
-
 
 async def validate_input(hass: HomeAssistant, data: dict[str, Any]) -> dict[str, Any]:
     """Validate the user input allows us to connect.
@@ -52,10 +38,11 @@ async def validate_input(hass: HomeAssistant, data: dict[str, Any]) -> dict[str,
     #     your_validate_func, data["username"], data["password"]
     # )
 
-    hub = PlaceholderHub(data["host"])
+    hub = Trane(data["host"], data["port"])
 
-    if not await hub.authenticate(data["username"], data["password"]):
-        raise InvalidAuth
+
+    if not await hass.async_add_executor_job(hub.validate):
+        raise CannotConnect
 
     # If you cannot connect:
     # throw CannotConnect

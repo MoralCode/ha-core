@@ -7,7 +7,7 @@
   "documentation": "https://www.home-assistant.io/integrations/comfortlink_ii_stats",
   "homekit": {},
   "iot_class": "local_push",
-  "requirements": ["lantrane==0.0.1"],
+  "requirements": ["lantrane==0.0.2"],
   "ssdp": [],
   "zeroconf": []
 }
