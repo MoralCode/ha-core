@@ -6,7 +6,7 @@ from homeassistant.components.sensor import (
     SensorEntity,
     SensorStateClass,
 )
-from homeassistant.const import TEMP_CELSIUS
+from homeassistant.const import PERCENTAGE
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.typing import ConfigType, DiscoveryInfoType
@@ -19,16 +19,24 @@ def setup_platform(
     discovery_info: DiscoveryInfoType | None = None,
 ) -> None:
     """Set up the sensor platform."""
-    add_entities([ExampleSensor()])
+    add_entities([ComfortLink2Sensor()])
 
 
-class ExampleSensor(SensorEntity):
+class ComfortLink2Sensor(SensorEntity):
     """Representation of a Sensor."""
 
-    _attr_name = "Example Temperature"
-    _attr_native_unit_of_measurement = TEMP_CELSIUS
-    _attr_device_class = SensorDeviceClass.TEMPERATURE
+    _attr_name = "ComfortLink 2"
+    _attr_native_unit_of_measurement = PERCENTAGE
+    _attr_device_class = SensorDeviceClass.POWER_FACTOR
     _attr_state_class = SensorStateClass.MEASUREMENT
+
+    @property
+    def should_poll(self):
+        """Determines if this is a local push or a poll integration.
+
+        https://developers.home-assistant.io/docs/integration_fetching_data.
+        """
+        return False
 
     def update(self) -> None:
         """Fetch new state data for the sensor.
