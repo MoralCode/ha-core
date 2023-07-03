@@ -874,6 +874,12 @@
       "config_flow": false,
       "iot_class": "local_push"
     },
+    "comfortlink_ii_stats": {
+      "name": "Comfortlink 2 Stats",
+      "integration_type": "hub",
+      "config_flow": true,
+      "iot_class": "local_push"
+    },
     "command_line": {
       "name": "Command Line",
       "integration_type": "hub",
