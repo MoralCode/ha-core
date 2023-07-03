@@ -10,6 +10,8 @@ from homeassistant.exceptions import ConfigEntryNotReady
 
 from .const import CONF_HOST, CONF_PORT, DOMAIN
 
+from .coordinator import ComfortLinkCoordinator
+
 # For your initial PR, limit it to 1 platform.
 PLATFORMS: list[Platform] = [Platform.SENSOR]
 
@@ -26,7 +28,24 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
     hass.data[DOMAIN][entry.entry_id] = {"trane_client": trane}
 
+
+    coordinator = ComfortLinkCoordinator(hass, my_api)
+
+    # Fetch initial data so we have data when entities subscribe
+    #
+    # If the refresh fails, async_config_entry_first_refresh will
+    # raise ConfigEntryNotReady and setup will try again later
+    #
+    # If you do not want to retry setup on failure, use
+    # coordinator.async_refresh() instead
+    #
+    await coordinator.async_config_entry_first_refresh()
+
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
+
+    async_add_entities(
+        ComfortLink2Sensor(coordinator, idx) for idx, ent in enumerate(coordinator.data)
+    )
 
     return True
 

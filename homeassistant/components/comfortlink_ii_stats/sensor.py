@@ -11,6 +11,8 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.typing import ConfigType, DiscoveryInfoType
 
+from .coordinator import ComfortLinkCoordinator
+
 
 def setup_platform(
     hass: HomeAssistant,
@@ -22,25 +24,30 @@ def setup_platform(
     add_entities([ComfortLink2Sensor()])
 
 
-class ComfortLink2Sensor(SensorEntity):
-    """Representation of a Sensor."""
+class ComfortLink2Sensor(ComfortLinkCoordinator, SensorEntity):
+    """Representation of a Sensor using CoordinatorEntity.
+
+    The CoordinatorEntity class provides:
+      should_poll
+      async_update
+      async_added_to_hass
+      available
+
+    """
 
     _attr_name = "ComfortLink 2"
     _attr_native_unit_of_measurement = PERCENTAGE
     _attr_device_class = SensorDeviceClass.POWER_FACTOR
     _attr_state_class = SensorStateClass.MEASUREMENT
 
-    @property
-    def should_poll(self):
-        """Determines if this is a local push or a poll integration.
 
-        https://developers.home-assistant.io/docs/integration_fetching_data.
-        """
-        return False
+    def __init__(self, coordinator, idx):
+        """Pass coordinator to CoordinatorEntity."""
+        super().__init__(coordinator, context=idx)
+        self.idx = idx
 
-    def update(self) -> None:
-        """Fetch new state data for the sensor.
-
-        This is the only method that should fetch new data for Home Assistant.
-        """
-        self._attr_native_value = 23
+    @callback
+    def _handle_coordinator_update(self) -> None:
+        """Handle updated data from the coordinator."""
+        self._attr_is_on = self.coordinator.data[self.idx]["state"]
+        self.async_write_ha_state()
