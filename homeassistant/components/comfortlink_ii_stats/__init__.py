@@ -24,7 +24,9 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     trane = Trane(entry.data[CONF_HOST], entry.data[CONF_PORT])
 
     if not await hass.async_add_executor_job(trane.validate):
-        raise ConfigEntryNotReady
+        raise ConfigEntryNotReady(
+            "invalid credentials - could not connect to Comfortlink"
+        )
 
     hass.data.setdefault(DOMAIN, {})
 
