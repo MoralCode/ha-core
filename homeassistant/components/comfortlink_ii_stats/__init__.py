@@ -50,11 +50,8 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     threading.Thread(
         target=_start_socket_connection, args=(hass, coordinator, trane)
     ).start()
-    await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
 
-    # async_add_entities(
-    #     ComfortLink2Sensor(coordinator, idx) for idx, ent in enumerate(coordinator.data)
-    # )
+    await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
 
     return True
 

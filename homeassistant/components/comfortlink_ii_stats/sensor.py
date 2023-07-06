@@ -33,7 +33,12 @@ async def async_setup_platform(
 async def async_setup_entry(
     hass: HomeAssistant, entry: ConfigEntry, async_add_entities
 ) -> bool:
-    pass
+    print("setup entry")
+
+    coordinator = hass.data[DOMAIN][entry.entry_id]["coordinator"]
+    async_add_entities(
+        ComfortLink2Sensor(coordinator, idx) for idx, ent in enumerate(coordinator.data)
+    )
 
 
 class ComfortLink2Sensor(ComfortLinkCoordinator, SensorEntity):
