@@ -4,7 +4,7 @@
   "version": "0.0.1",
   "codeowners": ["@MoralCode"],
   "config_flow": true,
-  "dependencies": ["lantrane==0.0.2"],
+  "dependencies": [],
   "documentation": "https://www.home-assistant.io/integrations/comfortlink_ii_stats",
   "homekit": {},
   "iot_class": "local_push",
