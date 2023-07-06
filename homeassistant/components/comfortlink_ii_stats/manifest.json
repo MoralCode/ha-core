@@ -1,6 +1,7 @@
 {
   "domain": "comfortlink_ii_stats",
   "name": "Comfortlink 2 Stats",
+  "version": "0.0.1",
   "codeowners": ["@MoralCode"],
   "config_flow": true,
   "dependencies": ["lantrane==0.0.2"],
