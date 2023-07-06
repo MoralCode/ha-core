@@ -59,6 +59,9 @@ class ComfortLink2Sensor(ComfortLinkCoordinator, SensorEntity):
         self.idx = idx
         self.coordinator = coordinator
 
+    @property
+    def unique_id(self):
+        return MAC_ADDR
 
     @property
     def device_info(self) -> DeviceInfo:
