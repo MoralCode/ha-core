@@ -43,17 +43,15 @@ async def async_setup_entry(hass, entry, async_add_entities):
 class ComfortLinkCoordinator(DataUpdateCoordinator):
     """My custom coordinator."""
 
-    def __init__(self, hass, my_api):
+    def __init__(self, hass, traneapi):
         """Initialize my coordinator."""
         super().__init__(
             hass,
             _LOGGER,
             # Name of the data. For logging purposes.
-            name="My sensor",
-            # Polling interval. Will only be polled if there are subscribers.
-            update_interval=timedelta(seconds=30),
+            name="ComfortLink",
         )
-        self.my_api = my_api
+        self.traneapi = traneapi
 
     async def _async_update_data(self):
         """Fetch data from API endpoint.
