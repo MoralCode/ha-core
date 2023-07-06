@@ -7,22 +7,27 @@ from homeassistant.components.sensor import (
     SensorStateClass,
 )
 from homeassistant.const import PERCENTAGE
-from homeassistant.core import HomeAssistant
+from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.typing import ConfigType, DiscoveryInfoType
 
+from .const import DOMAIN
 from .coordinator import ComfortLinkCoordinator
 
 
-def setup_platform(
+async def async_setup_platform(
     hass: HomeAssistant,
     config: ConfigType,
-    add_entities: AddEntitiesCallback,
+    async_add_entities: AddEntitiesCallback,
     discovery_info: DiscoveryInfoType | None = None,
 ) -> None:
     """Set up the sensor platform."""
-    add_entities([ComfortLink2Sensor()])
-
+    # add_entities([ComfortLink2Sensor()])
+    #get coordinator
+    coordinator = hass.data[DOMAIN]["coordinator"]
+    async_add_entities(
+        ComfortLink2Sensor(coordinator, idx) for idx, ent in enumerate(coordinator.data)
+    )
 
 class ComfortLink2Sensor(ComfortLinkCoordinator, SensorEntity):
     """Representation of a Sensor using CoordinatorEntity.
@@ -41,11 +46,11 @@ class ComfortLink2Sensor(ComfortLinkCoordinator, SensorEntity):
     _attr_state_class = SensorStateClass.MEASUREMENT
     _attr_should_poll = False
 
-
     def __init__(self, coordinator, idx):
         """Pass coordinator to CoordinatorEntity."""
         super().__init__(coordinator, context=idx)
         self.idx = idx
+        self.coordinator = coordinator
 
     @callback
     def _handle_coordinator_update(self) -> None:

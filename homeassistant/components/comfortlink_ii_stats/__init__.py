@@ -1,6 +1,9 @@
 """The Comfortlink 2 Stats integration."""
 from __future__ import annotations
 
+import asyncio
+import threading
+
 from lantrane import Trane
 
 from homeassistant.config_entries import ConfigEntry
@@ -9,7 +12,6 @@ from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import ConfigEntryNotReady
 
 from .const import CONF_HOST, CONF_PORT, DOMAIN
-
 from .coordinator import ComfortLinkCoordinator
 
 # For your initial PR, limit it to 1 platform.
@@ -26,10 +28,15 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
     hass.data.setdefault(DOMAIN, {})
 
-    hass.data[DOMAIN][entry.entry_id] = {"trane_client": trane}
+
 
 
     coordinator = ComfortLinkCoordinator(hass, entry)
+    hass.data[DOMAIN] = {#[entry.entry_id]
+        "trane_client": trane,
+        "coordinator": coordinator
+    }
+
 
     # Fetch initial data so we have data when entities subscribe
     #
@@ -42,23 +49,23 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     await coordinator.async_config_entry_first_refresh()
 
     # Start the socket connection and data processing in a separate thread or asyncio task
-    threading.Thread(target=start_socket_connection, args=(hass, coordinator, trane)).start()
+    threading.Thread(target=_start_socket_connection, args=(hass, coordinator, trane)).start()
     
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
 
-    async_add_entities(
-        ComfortLink2Sensor(coordinator, idx) for idx, ent in enumerate(coordinator.data)
-    )
+    # async_add_entities(
+    #     ComfortLink2Sensor(coordinator, idx) for idx, ent in enumerate(coordinator.data)
+    # )
 
     return True
 
-def start_socket_connection(hass, coordinator, trane):
+def _start_socket_connection(hass, coordinator, trane):
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
-    loop.run_until_complete(socket_listener(hass, coordinator, trane))
+    loop.run_until_complete(_socket_listener(hass, coordinator, trane))
     loop.close()
 
-async def socket_listener(hass, coordinator, trane):
+async def _socket_listener(hass, coordinator, trane):
     # Create a socket connection to your device and listen for data
     # Use your Python library to process the received raw bytes into a class
     # Update the coordinator with the new compressor speed value whenever it changes

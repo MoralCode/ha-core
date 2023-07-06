@@ -4,6 +4,7 @@ from __future__ import annotations
 import logging
 from typing import Any
 
+from lantrane import Trane
 import voluptuous as vol
 
 from homeassistant import config_entries
@@ -12,8 +13,6 @@ from homeassistant.data_entry_flow import FlowResult
 from homeassistant.exceptions import HomeAssistantError
 
 from .const import DOMAIN
-
-from lantrane import Trane
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -50,7 +49,7 @@ async def validate_input(hass: HomeAssistant, data: dict[str, Any]) -> dict[str,
     # InvalidAuth
 
     # Return info that you want to store in the config entry.
-    data['title'] = f"Comfortlink 2 ({data['port']})"
+    data["title"] = f"Comfortlink 2 ({data['port']})"
     return data
 
 

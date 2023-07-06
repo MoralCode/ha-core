@@ -22,16 +22,19 @@ class ComfortLinkCoordinator(DataUpdateCoordinator):
             # Name of the data. For logging purposes.
             name=DOMAIN,
         )
-        self.compressor_speed = None        
+        self.compressor_speed = None
 
-	# coordinator.async_set_updated_data(data)
+    # coordinator.async_set_updated_data(data)
 
     def async_set_compressor_speed(self, compressor_speed):
+        """Set the compressor speed when new data comes in."""
         self.compressor_speed = compressor_speed
         self.async_set_updated_data(self.compressor_speed)
 
     async def async_update_data(self):
-        # This function will be called periodically according to the configured update interval
+        """Perform an async data update.
+
+        called periodically according to the configured update interval
+        """
         # You can perform any necessary tasks here, if required
         pass
-

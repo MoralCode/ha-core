@@ -4,7 +4,10 @@ from unittest.mock import AsyncMock, patch
 import pytest
 
 from homeassistant import config_entries
-from homeassistant.components.comfortlink_ii_stats.config_flow import CannotConnect, InvalidAuth
+from homeassistant.components.comfortlink_ii_stats.config_flow import (
+    CannotConnect,
+    InvalidAuth,
+)
 from homeassistant.components.comfortlink_ii_stats.const import DOMAIN
 from homeassistant.core import HomeAssistant
 from homeassistant.data_entry_flow import FlowResultType
