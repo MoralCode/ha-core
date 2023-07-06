@@ -3,7 +3,7 @@
   "name": "Comfortlink 2 Stats",
   "codeowners": ["@MoralCode"],
   "config_flow": true,
-  "dependencies": [],
+  "dependencies": ["lantrane==0.0.2"],
   "documentation": "https://www.home-assistant.io/integrations/comfortlink_ii_stats",
   "homekit": {},
   "iot_class": "local_push",
