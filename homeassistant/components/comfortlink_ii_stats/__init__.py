@@ -29,12 +29,13 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         )
 
     hass.data.setdefault(DOMAIN, {})
-
-    coordinator = ComfortLinkCoordinator(hass, entry)
     hass.data[DOMAIN][entry.entry_id] = {
-        "trane_client": trane,
-        "coordinator": coordinator,
+        "trane_client": trane
     }
+    
+    config = hass.data[DOMAIN][entry.entry_id]
+    coordinator = ComfortLinkCoordinator(hass, config)
+    hass.data[DOMAIN][entry.entry_id]["coordinator"] = coordinator
 
     # # Fetch initial data so we have data when entities subscribe
     # #

@@ -24,8 +24,6 @@ class ComfortLinkCoordinator(DataUpdateCoordinator):
         )
         self.compressor_speed = None
 
-    # coordinator.async_set_updated_data(data)
-
     def async_set_compressor_speed(self, compressor_speed):
         """Set the compressor speed when new data comes in."""
         self.compressor_speed = compressor_speed
