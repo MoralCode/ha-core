@@ -11,7 +11,7 @@ from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.typing import ConfigType, DiscoveryInfoType
 
-from .const import DOMAIN
+from .const import DOMAIN, MAC_ADDR
 from .coordinator import ComfortLinkCoordinator
 
 
@@ -52,6 +52,22 @@ class ComfortLink2Sensor(ComfortLinkCoordinator, SensorEntity):
         super().__init__(coordinator, context=idx)
         self.idx = idx
         self.coordinator = coordinator
+
+
+    @property
+    def device_info(self) -> DeviceInfo:
+        """Return the device info."""
+        return DeviceInfo(
+            identifiers={
+                # Serial numbers are unique identifiers within a specific domain
+                (DOMAIN, MAC_ADDR)
+            },
+            name=self.name,
+            manufacturer="Trane, Inc.",
+            model="XL850",
+            sw_version="0.0.0",
+            # via_device=(DOMAIN, self.api.bridgeid),
+        )
 
     @callback
     def _handle_coordinator_update(self) -> None:
