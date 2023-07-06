@@ -31,7 +31,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     hass.data.setdefault(DOMAIN, {})
 
     coordinator = ComfortLinkCoordinator(hass, entry)
-    hass.data[DOMAIN] = {  # [entry.entry_id]
+    hass.data[DOMAIN][entry.entry_id] = {
         "trane_client": trane,
         "coordinator": coordinator,
     }
