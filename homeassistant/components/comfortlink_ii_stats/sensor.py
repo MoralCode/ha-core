@@ -30,6 +30,12 @@ async def async_setup_platform(
     )
 
 
+async def async_setup_entry(
+    hass: HomeAssistant, entry: ConfigEntry, async_add_entities
+) -> bool:
+    pass
+
+
 class ComfortLink2Sensor(ComfortLinkCoordinator, SensorEntity):
     """Representation of a Sensor using CoordinatorEntity.
 
