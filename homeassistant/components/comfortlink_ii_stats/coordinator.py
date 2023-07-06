@@ -43,34 +43,24 @@ async def async_setup_entry(hass, entry, async_add_entities):
 class ComfortLinkCoordinator(DataUpdateCoordinator):
     """My custom coordinator."""
 
-    def __init__(self, hass, traneapi):
+    def __init__(self, hass, config_entry):
         """Initialize my coordinator."""
         super().__init__(
             hass,
             _LOGGER,
             # Name of the data. For logging purposes.
-            name="ComfortLink",
+            name=DOMAIN,
         )
-        self.traneapi = traneapi
+        self.compressor_speed = None        
 
-    async def _async_update_data(self):
-        """Fetch data from API endpoint.
+	# coordinator.async_set_updated_data(data)
 
-        This is the place to pre-process the data to lookup tables
-        so entities can quickly look up their data.
-        """
-        try:
-            # Note: asyncio.TimeoutError and aiohttp.ClientError are already
-            # handled by the data update coordinator.
-            async with async_timeout.timeout(10):
-                # Grab active context variables to limit data required to be fetched from API
-                # Note: using context is not required if there is no need or ability to limit
-                # data retrieved from API.
-                listening_idx = set(self.async_contexts())
-                return await self.my_api.fetch_data(listening_idx)
-        except ApiAuthError as err:
-            # Raising ConfigEntryAuthFailed will cancel future updates
-            # and start a config flow with SOURCE_REAUTH (async_step_reauth)
-            raise ConfigEntryAuthFailed from err
-        except ApiError as err:
-            raise UpdateFailed(f"Error communicating with API: {err}")
+    def async_set_compressor_speed(self, compressor_speed):
+        self.compressor_speed = compressor_speed
+        self.async_set_updated_data(self.compressor_speed)
+
+    async def async_update_data(self):
+        # This function will be called periodically according to the configured update interval
+        # You can perform any necessary tasks here, if required
+        pass
+
