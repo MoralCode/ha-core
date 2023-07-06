@@ -39,6 +39,7 @@ class ComfortLink2Sensor(ComfortLinkCoordinator, SensorEntity):
     _attr_native_unit_of_measurement = PERCENTAGE
     _attr_device_class = SensorDeviceClass.POWER_FACTOR
     _attr_state_class = SensorStateClass.MEASUREMENT
+    _attr_should_poll = False
 
 
     def __init__(self, coordinator, idx):
