@@ -30,15 +30,11 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
     hass.data.setdefault(DOMAIN, {})
 
-
-
-
     coordinator = ComfortLinkCoordinator(hass, entry)
-    hass.data[DOMAIN] = {#[entry.entry_id]
+    hass.data[DOMAIN] = {  # [entry.entry_id]
         "trane_client": trane,
-        "coordinator": coordinator
+        "coordinator": coordinator,
     }
-
 
     # Fetch initial data so we have data when entities subscribe
     #
@@ -51,8 +47,9 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     await coordinator.async_config_entry_first_refresh()
 
     # Start the socket connection and data processing in a separate thread or asyncio task
-    threading.Thread(target=_start_socket_connection, args=(hass, coordinator, trane)).start()
-    
+    threading.Thread(
+        target=_start_socket_connection, args=(hass, coordinator, trane)
+    ).start()
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
 
     # async_add_entities(
@@ -61,11 +58,13 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
     return True
 
+
 def _start_socket_connection(hass, coordinator, trane):
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
     loop.run_until_complete(_socket_listener(hass, coordinator, trane))
     loop.close()
+
 
 async def _socket_listener(hass, coordinator, trane):
     # Create a socket connection to your device and listen for data

@@ -23,11 +23,12 @@ async def async_setup_platform(
 ) -> None:
     """Set up the sensor platform."""
     # add_entities([ComfortLink2Sensor()])
-    #get coordinator
+    # get coordinator
     coordinator = hass.data[DOMAIN]["coordinator"]
     async_add_entities(
         ComfortLink2Sensor(coordinator, idx) for idx, ent in enumerate(coordinator.data)
     )
+
 
 class ComfortLink2Sensor(ComfortLinkCoordinator, SensorEntity):
     """Representation of a Sensor using CoordinatorEntity.

@@ -24,6 +24,7 @@ STEP_USER_DATA_SCHEMA = vol.Schema(
     }
 )
 
+
 async def validate_input(hass: HomeAssistant, data: dict[str, Any]) -> dict[str, Any]:
     """Validate the user input allows us to connect.
 
@@ -38,7 +39,6 @@ async def validate_input(hass: HomeAssistant, data: dict[str, Any]) -> dict[str,
     # )
 
     hub = Trane(data["host"], data["port"])
-
 
     if not await hass.async_add_executor_job(hub.validate):
         raise CannotConnect
