@@ -32,10 +32,12 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
     config = hass.data[DOMAIN][entry.entry_id]
 
+    trane.listen()
+   
     # Start the socket connection and data processing in a separate thread or asyncio task
-    threading.Thread(
-        target=_start_socket_connection, args=(hass, coordinator, trane)
-    ).start()
+    # threading.Thread(
+    #     target=_start_socket_connection, args=(hass, coordinator, trane)
+    # ).start()
 
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
 
