@@ -29,7 +29,7 @@ async def async_setup_entry(
     unique_id = entry.entry_id
 
     trane = hass.data[DOMAIN][entry.entry_id]["trane_client"]
-    async_add_entities([ComfortLink2Sensor(unique_id, name, entity_id, trane)])
+    async_add_entities([ComfortLink2Sensor(unique_id, name, entity_id, hass, trane)])
 
     # async_add_entities(
     #     ComfortLink2Sensor(coordinator, idx) for idx, ent in enumerate(coordinator.data)
@@ -54,11 +54,12 @@ class ComfortLink2Sensor(SensorEntity):
     _attr_should_poll = False
     # _attr_unique_id = MAC_ADDR
 
-    def __init__(self, unique_id: str, name: str, wrapped_entity_id: str, clientlib: Trane) -> None:
+    def __init__(self, unique_id: str, name: str, wrapped_entity_id: str, hass: HomeAssistant, clientlib: Trane) -> None:
         """Initialize NEW_DOMAIN Sensor."""
         super().__init__()
         self._wrapped_entity_id = wrapped_entity_id
         self._attr_name = name
+        self.hass = hass
         self._attr_unique_id = unique_id
         self._clientlib = clientlib
         self._unsub = lambda a: a
