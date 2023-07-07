@@ -39,7 +39,7 @@ async def async_setup_entry(
 
     registry = er.async_get(hass)
     # Validate + resolve entity registry id to entity_id
-    entity_id = er.async_validate_entity_id(registry, entry.entity_id)
+    entity_id = er.async_validate_entity_id(registry, entry.entry_id)
     # TODO Optionally validate config entry options before creating entity
     name = entry.title
     unique_id = entry.entry_id
