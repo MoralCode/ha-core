@@ -44,8 +44,6 @@ async def async_setup_entry(
     name = entry.title
     unique_id = entry.entry_id
 
-
-    # coordinator = hass.data[DOMAIN][entry.entry_id]["coordinator"]
     async_add_entities([ComfortLink2Sensor(unique_id, name, entity_id)])
 
     # async_add_entities(
@@ -53,7 +51,7 @@ async def async_setup_entry(
     # )
 
 
-class ComfortLink2Sensor(ComfortLinkCoordinator, SensorEntity):
+class ComfortLink2Sensor(SensorEntity):
     """Representation of a Sensor using CoordinatorEntity.
 
     The CoordinatorEntity class provides:
@@ -102,9 +100,3 @@ class ComfortLink2Sensor(ComfortLinkCoordinator, SensorEntity):
             sw_version="0.0.0",
             # via_device=(DOMAIN, self.api.bridgeid),
         )
-
-    @callback
-    def _handle_coordinator_update(self) -> None:
-        """Handle updated data from the coordinator."""
-        # self._attr_is_on = self.coordinator.data[self.idx]["state"]
-        self.async_write_ha_state()
