@@ -8,34 +8,18 @@ from homeassistant.components.sensor import (
 )
 from homeassistant.const import PERCENTAGE
 from homeassistant.core import HomeAssistant, callback
+from homeassistant.helpers.entity import DeviceInfo
 from homeassistant.helpers import entity_registry as er
-from homeassistant.const import CONF_ENTITY_ID
-from homeassistant.helpers.entity_platform import AddEntitiesCallback
-from homeassistant.helpers.typing import ConfigType, DiscoveryInfoType
 
 from .const import DOMAIN, MAC_ADDR
 from .coordinator import ComfortLinkCoordinator
-
-
-# async def async_setup_platform(
-#     hass: HomeAssistant,
-#     config: ConfigType,
-#     async_add_entities: AddEntitiesCallback,
-#     discovery_info: DiscoveryInfoType | None = None,
-# ) -> None:
-#     """Set up the sensor platform."""
-#     # add_entities([ComfortLink2Sensor()])
-#     # get coordinator
-#     print("setup platform")
-#     coordinator = hass.data[DOMAIN]["coordinator"]
-#     async_add_entities(
-#         ComfortLink2Sensor(coordinator, idx) for idx, ent in enumerate(coordinator.data)
-#     )
+from lantrane import Trane
 
 
 async def async_setup_entry(
     hass: HomeAssistant, entry: ConfigEntry, async_add_entities
 ) -> bool:
+    """ perform the setup for this platform"""
 
     registry = er.async_get(hass)
     # Validate + resolve entity registry id to entity_id
@@ -77,7 +61,7 @@ class ComfortLink2Sensor(SensorEntity):
         self._attr_name = name
         self._attr_unique_id = unique_id
         self._clientlib = clientlib
-        self._unsub = None
+        self._unsub = lambda a: a
 
 
     async def async_added_to_hass(self) -> None:
@@ -88,6 +72,9 @@ class ComfortLink2Sensor(SensorEntity):
         )
 
         self.hass.data[DOMAIN].entity_ids.add(self.entity_id)
+
+
+        return
 
     async def async_will_remove_from_hass(self) -> None:
         """Unsubscribe from data updates."""
