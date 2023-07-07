@@ -77,7 +77,28 @@ class ComfortLink2Sensor(SensorEntity):
         self._attr_name = name
         self._attr_unique_id = unique_id
         self._clientlib = clientlib
+        self._unsub = None
 
+
+    async def async_added_to_hass(self) -> None:
+        """Subscribe to data updates."""
+        self._unsub = await self.hass.async_add_executor_job(
+            self._clientlib.on_data,# add a callback to listen for new data
+            self._update_data,
+        )
+
+        self.hass.data[DOMAIN].entity_ids.add(self.entity_id)
+
+    async def async_will_remove_from_hass(self) -> None:
+        """Unsubscribe from data updates."""
+        await self.hass.async_add_executor_job(self._unsub)
+
+    def _update_data(self, data):
+        """ Tell HomeAssistant that new data is available"""
+        hass.states.set(DOMAIN + ".compressor_speed", data.cmp_spd)
+        # self.state.native_value
+        self.async_schedule_update_ha_state()
+    
     # def __init__(self, coordinator, idx):
     #     """Pass coordinator to CoordinatorEntity."""
     #     super().__init__(coordinator, context=idx)
