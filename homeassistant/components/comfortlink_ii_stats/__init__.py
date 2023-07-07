@@ -48,7 +48,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     # await coordinator.async_config_entry_first_refresh()
 
     # Start the socket connection and data processing in a separate thread or asyncio task
-    thread = threading.Thread(
+    threading.Thread(
         target=_start_socket_connection, args=(hass, coordinator, trane)
     ).start()
 
