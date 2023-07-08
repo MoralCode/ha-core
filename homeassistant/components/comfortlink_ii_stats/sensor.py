@@ -68,7 +68,7 @@ class ComfortLink2Sensor(SensorEntity):
 
     def _update_data(self, data):
         """ Tell HomeAssistant that new data is available"""
-        hass.states.set(DOMAIN + ".compressor_speed", data.cmp_spd)
+        self.hass.states.set(DOMAIN + ".compressor_speed", data.cmp_spd)
         # self.state.native_value
         self.async_schedule_update_ha_state()
     
