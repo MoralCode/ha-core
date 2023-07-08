@@ -12,7 +12,7 @@ from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.entity import DeviceInfo
 from homeassistant.helpers import entity_registry as er
 
-from .const import DOMAIN, MAC_ADDR
+from .const import DOMAIN
 from lantrane import Trane
 
 
