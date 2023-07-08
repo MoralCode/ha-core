@@ -12,7 +12,6 @@ from homeassistant.helpers.entity import DeviceInfo
 from homeassistant.helpers import entity_registry as er
 
 from .const import DOMAIN, MAC_ADDR
-from .coordinator import ComfortLinkCoordinator
 from lantrane import Trane
 
 
@@ -28,19 +27,9 @@ async def async_setup_entry(
     trane = hass.data[DOMAIN][entry.entry_id]["trane_client"]
     async_add_entities([ComfortLink2Sensor(unique_id, name, hass, trane)])
 
-    # async_add_entities(
-    #     ComfortLink2Sensor(coordinator, idx) for idx, ent in enumerate(coordinator.data)
-    # )
-
 
 class ComfortLink2Sensor(SensorEntity):
-    """Representation of a Sensor using CoordinatorEntity.
-
-    The CoordinatorEntity class provides:
-      should_poll
-      async_update
-      async_added_to_hass
-      available
+    """Representation of a Sensor
 
     """
 
@@ -83,12 +72,6 @@ class ComfortLink2Sensor(SensorEntity):
         # self.state.native_value
         self.async_schedule_update_ha_state()
     
-    # def __init__(self, coordinator, idx):
-    #     """Pass coordinator to CoordinatorEntity."""
-    #     super().__init__(coordinator, context=idx)
-    #     self.idx = idx
-    #     self.coordinator = coordinator
-
     # @property
     # def unique_id(self):
     #     return self.idx

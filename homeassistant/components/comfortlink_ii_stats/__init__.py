@@ -34,30 +34,11 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
     await trane.listen()
    
-    # Start the socket connection and data processing in a separate thread or asyncio task
-    # threading.Thread(
-    #     target=_start_socket_connection, args=(hass, coordinator, trane)
-    # ).start()
 
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
 
     return True
 
-
-def _start_socket_connection(hass, coordinator, trane):
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
-    loop.run_until_complete(_socket_listener(hass, coordinator, trane))
-    loop.close()
-
-
-async def _socket_listener(hass, coordinator, trane):
-    # Create a socket connection to your device and listen for data
-    # Use your Python library to process the received raw bytes into a class
-    # Update the coordinator with the new compressor speed value whenever it changes
-    # Example:
-    for data in trane.listen():
-        coordinator.async_set_compressor_speed(data.cmp_spd)
 
 
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
