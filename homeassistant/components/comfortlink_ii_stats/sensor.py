@@ -41,6 +41,7 @@ class ComfortLink2Sensor(SensorEntity):
     _attr_device_class = SensorDeviceClass.POWER_FACTOR
     _attr_state_class = SensorStateClass.MEASUREMENT
     _attr_should_poll = False
+    _attr_native_value = 0
 
     def __init__(self, unique_id: str, name: str, hass: HomeAssistant, clientlib: Trane) -> None:
         """Initialize NEW_DOMAIN Sensor."""
