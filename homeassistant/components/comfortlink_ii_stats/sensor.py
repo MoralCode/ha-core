@@ -68,7 +68,7 @@ class ComfortLink2Sensor(SensorEntity):
             self._update_data,
         )
 
-        self.hass.data[DOMAIN].entity_ids.add(self.entity_id)
+        # self.hass.data[DOMAIN].entity_ids.add(self.entity_id)
 
 
         return
