@@ -30,10 +30,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     hass.data.setdefault(DOMAIN, {})
     hass.data[DOMAIN][entry.entry_id] = {"trane_client": trane}
 
-    config = hass.data[DOMAIN][entry.entry_id]
-
-    await trane.listen()
-   
+    hass.async_create_task(trane.listen())
 
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
 
