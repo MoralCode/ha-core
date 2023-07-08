@@ -26,6 +26,8 @@ async def async_setup_entry(
     unique_id = entry.entry_id
 
     trane = hass.data[DOMAIN][entry.entry_id]["trane_client"]
+    entry.async_create_task(hass, trane.listen(), "tranelistener") #async_create_background_task
+
     async_add_entities([ComfortLink2Sensor(unique_id, name, hass, trane)])
 
 
